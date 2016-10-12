@@ -10,4 +10,7 @@ with open("Great_East_Japan_Earthquake.csv", "rb") as f:
     for row in reader:
         data.append(row)
 
-print(data)
+# リストの状態では数字の羅列になるためn次元のリストだとその階層まで下げる必要がある
+for t in data:
+    # for s in t[3]:
+        print(t[4])
