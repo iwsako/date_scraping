@@ -13,23 +13,49 @@ chasen_list = []
 chasen_data = []
 
 
-def change_morpheme(data):
-    chasen = tagger.parse(data[4])
-    chasen_list = chasen.split("\n")
-    # print(chasen_list[0])
-
-    for cdata in chasen_list:
-            chasen_data.append(re.split(r'\t|,|', cdata))
-            #print(chasen_data[0])
-
-    print(chasen_data[0][2])
-
-
 def open_csv():
     with open("Great_East_Japan_Earthquake.csv", "rb") as file:
         for line in file:
-            data.append(line)
+            temp = line.split(",")
+            # bodyの部分だけdataに格納
+            if(len(temp) > 4):
+                data.append(temp[4])
+
+
+def make_list():
+    # print len(data)
+    # 長すぎるため一時省略
+    for sentence in data[:10]:
+        chasen = tagger.parse(sentence)
+        # print(chasen)
+        chasen_list = chasen.split("\n")
+
+        for cdata in chasen_list:
+                chasen_data.append(re.split(r'\t|,|', cdata))
+
+        # print len(chasen_data)
+        # 確認用
+        # for textlist in chasen_data:
+        #     print("-------")
+        #     for text in textlist:
+        #         print text
+        #     print("-------")
+
+
+# 日付を抽出
+def pick_date():
+    num_buffer = ""
+    for textlist in chasen_data:
+        if len(textlist) > 2:
+            # print(textlist[2])
+            if textlist[0] == "年" or textlist[0] == "月" or textlist[0] == "日":
+                print(num_buffer)
+                # print(textlist[0])
+
+            if str(textlist[2]) == "数":
+                num_buffer = textlist[0]
 
 
 open_csv()
-change_morpheme(data)
+make_list()
+pick_date()
