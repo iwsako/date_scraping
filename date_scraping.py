@@ -1,11 +1,12 @@
 # coding:utf-8
 
-import sys
 import csv
 import MeCab
 import re
+# import sys
+# import codecs
+# sys.stdout = codecs.EncodedFile(sys.stdout, 'utf_8')
 
-csv = sys.argv
 tagger = MeCab.Tagger()
 data = []
 chasen_buffer = []
@@ -70,15 +71,20 @@ def pickDate():
                     date_data = chasen_data[i][0] + chasen_data[i+1][0]
                     writeCsv(date_data)
 
+rowList = []
+
 
 # csvに書き込みをする関数
 def writeCsv(date_data):
-    # print type(date_data)
-    with open("list.csv", "wb") as f:
-        csvWriter = csv.writer(f)
-        csvWrite.write(date_data)
+    f = open('hoge.csv', 'ab')
+    csvWriter = csv.writer(f)
+    # まずunicodeに変換
+    date_data = date_data.decode('utf-8')
+    # csvモジュールが utf-8 をサポートしていない
+    # shift-jisに変換して書き込む
+    rowList.append(date_data.encode('shift-jis'))
+    csvWriter.writerow(rowList)
     f.close()
-
 
 openCsv()
 makeList()
